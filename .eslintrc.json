@@ -16,7 +16,8 @@
         "project": "./tsconfig.eslint.json"
     },
     "rules": {
-      "no-console": "error",
+      "no-console": "off",
+      "max-len": "off",
       "import/prefer-default-export" : "off"
     }
 }
