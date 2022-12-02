@@ -1,3 +1,3 @@
-import { nanoid } from 'nanoid'
+import solve from './day-01/solve.js';
 
-console.log('Random string', nanoid())
+solve();
