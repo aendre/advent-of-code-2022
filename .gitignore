@@ -5,3 +5,6 @@ package-lock.json
 # Ignore built files
 dist
 build
+
+# ignore the file containing the sessionID
+.session.cfg
