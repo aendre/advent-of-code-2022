@@ -1,3 +1,3 @@
-import solve from './day-01/solve.js';
+import solve from './day-03/solve.js';
 
 solve();
