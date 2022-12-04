@@ -15,8 +15,7 @@ export async function downloadInput(year: string, day: string, sessionCookie: st
 
 export async function autoDownload() {
   const now = new Date();
-  // const day = now.getDate().toString();
-  const day = '3';
+  const day = now.getDate().toString();
   const dayday = (`0${day}`).slice(-2); // Day with leadin zeroes
   const year = now.getFullYear().toString();
 
