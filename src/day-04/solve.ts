@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Sugar from 'sugar';
-import { readInputFile } from '../utils/readFile.js';
+import { readInputFile } from '../utils/fileUtils.js';
 
 export type Range = {
   lower: number,

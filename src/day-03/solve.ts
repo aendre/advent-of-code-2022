@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { readInputFile } from '../utils/readFile.js';
+import { readInputFile } from '../utils/fileUtils.js';
 import { toGroupsOfN } from '../utils/arrayUtils.js';
 
 function splitToChars(input: string) {

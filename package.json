@@ -5,13 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx nodemon",
+    "start": "npx nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Andras Endre",
   "license": "ISC",
   "devDependencies": {
+    "@swc/core": "^1.3.21",
     "@types/lodash": "^4.14.190",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.45.0",

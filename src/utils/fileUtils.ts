@@ -1,7 +1,18 @@
 import axios from 'axios';
 import * as fs from 'fs';
+import path from 'path'
+import { leadingZeroDay } from './stringutils.js';
 
-export async function downloadInput(year: string, day: string, sessionCookie: string) {
+export function readInputFile(filepath: string) {
+  return fs.readFileSync(`./src/${filepath}`, 'utf8');
+}
+
+export function readFromFolder(folder: string, filename: string) {
+  const filepath = path.join(folder, filename)
+  return fs.readFileSync(filepath, 'utf8');
+}
+
+export async function downloadInput(year: string, day: string | number, sessionCookie: string) {
   const response = await axios.get(`https://adventofcode.com/${year}/day/${day}/input`, {
     withCredentials: true,
     headers: {
@@ -13,10 +24,9 @@ export async function downloadInput(year: string, day: string, sessionCookie: st
   return response.data.replace(/\n$/, '');
 }
 
-export async function autoDownload() {
+export async function autoDownload(day: string | number) {
   const now = new Date();
-  const day = now.getDate().toString();
-  const dayday = (`0${day}`).slice(-2); // Day with leadin zeroes
+  const dayday = leadingZeroDay(day);
   const year = now.getFullYear().toString();
 
   const sessionCookie = fs.readFileSync('.session.cfg', 'utf-8');

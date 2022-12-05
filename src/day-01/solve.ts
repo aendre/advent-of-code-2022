@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { readInputFile } from '../utils/readFile.js';
+import { readInputFile } from '../utils/fileUtils.js';
 
 export default function solve() {
   const fileContent = readInputFile('day-01/example.txt');
