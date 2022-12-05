@@ -6,10 +6,10 @@ export default function solve() {
 
   // Part I
   const result = fileContent.split('\n\n')
-    .map((calories) => calories
+    .map(calories => calories
       .split('\n')
-      .map((cal) => Number(cal)))
-    .map((calories) => _.sum(calories))
+      .map(cal => Number(cal)))
+    .map(calories => _.sum(calories))
 
   console.log('RESULT PART I', _.max(result));
 

@@ -65,8 +65,8 @@ function getSymbolToFilfull(match: MatchScore) {
 export default function solve() {
   const fileInput = readInputFile('day-02/example.txt');
   const matches = fileInput.split('\n')
-    .map((row) => mapToSameInput(row))
-    .map((round) => {
+    .map(row => mapToSameInput(row))
+    .map(round => {
       const play = _.split(round, ' ');
       return {
         opponent: play[0],
@@ -75,10 +75,10 @@ export default function solve() {
       };
     })
 
-  const result = matches.map((match) => calculateGameScore(match) + calculateSymbolScore(match.you))
+  const result = matches.map(match => calculateGameScore(match) + calculateSymbolScore(match.you))
   console.log('RESULT PART I', _.sum(result));
 
   const result2 = matches
-    .map((match) => match.expected + calculateSymbolScore(getSymbolToFilfull(match)));
+    .map(match => match.expected + calculateSymbolScore(getSymbolToFilfull(match)));
   console.log('RESULT PART II', _.sum(result2));
 }
