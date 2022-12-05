@@ -77,5 +77,5 @@ export default function solve() {
   // console.log('RESULT PART I', topBoxes(stacks));
 
   crateMover9001(stacks, commands)
-  console.log('RESULT PART II', topBoxes(stacks));
+  console.log('Level 2:', topBoxes(stacks));
 }

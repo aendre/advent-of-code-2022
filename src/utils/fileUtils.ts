@@ -8,6 +8,8 @@ export function readInputFile(filepath: string) {
 }
 
 export function readFromFolder(folder: string, filename: string) {
+  console.log('\x1b[33m%s\x1b[0m', ` 🚀 ${filename}`);
+  console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
   const filepath = path.join(folder, filename)
   return fs.readFileSync(filepath, 'utf8');
 }
@@ -37,12 +39,6 @@ export async function autoDownload(day: string | number) {
     fs.writeFileSync(filePath, content, {
       encoding: 'utf8',
     })
-    console.log('-----------------------------------------')
-    console.log('! New download: ', filePath)
-    console.log('-----------------------------------------')
-  } else {
-    console.log('-----------------------------------------')
-    console.log('| Cached: ', filePath)
-    console.log('-----------------------------------------')
+    console.log('\x1b[33m%s\x1b[0m', ` 🏗️  New input downloaded: ${filePath}`); // cyan
   }
 }
