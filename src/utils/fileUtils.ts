@@ -31,6 +31,11 @@ export async function autoDownload(day: string | number) {
   const dayday = leadingZeroDay(day);
   const year = now.getFullYear().toString();
 
+  if (Number(day) > now.getDate()) {
+    console.log('\x1b[33m%s\x1b[0m', ' 🏗️  No input downloaded from the future');
+    return
+  }
+
   const sessionCookie = fs.readFileSync('.session.cfg', 'utf-8');
   const filePath = `src/day-${dayday}/input.txt`;
 
@@ -39,6 +44,6 @@ export async function autoDownload(day: string | number) {
     fs.writeFileSync(filePath, content, {
       encoding: 'utf8',
     })
-    console.log('\x1b[33m%s\x1b[0m', ` 🏗️  New input downloaded: ${filePath}`); // cyan
+    console.log('\x1b[33m%s\x1b[0m', ` 🏗️  New input downloaded: ${filePath}`);
   }
 }
