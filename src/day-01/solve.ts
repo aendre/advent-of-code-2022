@@ -8,8 +8,8 @@ export default function solve() {
   const result = fileContent.split('\n\n')
     .map(calories => calories
       .split('\n')
-      .map(cal => Number(cal)))
-    .map(calories => _.sum(calories))
+      .map(Number))
+    .map(_.sum)
 
   console.log('RESULT PART I', _.max(result));
 

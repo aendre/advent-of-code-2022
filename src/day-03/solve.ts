@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { readInputFile } from '../utils/fileUtils.js';
-import { toGroupsOfN } from '../utils/arrayUtils.js';
 
 function splitToChars(input: string) {
   return Array.from(input);
@@ -24,7 +23,7 @@ export default function solve() {
       return [
         rucksack.slice(0, compartimentSize),
         rucksack.slice(compartimentSize),
-      ].map(letters => splitToChars(letters))
+      ].map(splitToChars)
     })
     .map(compartiments => _.intersection(...compartiments))
     .map(rucksack => _.head(rucksack) ?? '')
@@ -34,13 +33,13 @@ export default function solve() {
 
   // Part II
   const rows = fileContent.split('\n')
-    .map(row => splitToChars(row));
+    .map(splitToChars);
 
-  const groups = toGroupsOfN(rows, 3)
+  const groups = _.chunk(rows, 3)
   const priorities = groups
     .map(group => _.intersection(...group))
     .map(group => _.head(group) ?? '')
-    .map(commonLetter => assignPriority(commonLetter))
+    .map(assignPriority)
 
   console.log('RESULT PART II', _.sum(priorities));
 }
