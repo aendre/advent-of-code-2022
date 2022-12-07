@@ -65,14 +65,14 @@ export default function solve() {
       if (fileName !== null) {
         currentNode.files.push({
           name: fileName,
-          size: Number(fileSize),
+          size: fileSize,
         })
       }
     // Process folder
     } else if (command === Command.ListDir) {
       const [folderName] = patternMatch(line, 'dir $str')
       currentNode.folders.push({
-        name: folderName ?? '',
+        name: folderName,
         files: [],
         folders: [],
         parent: currentNode,

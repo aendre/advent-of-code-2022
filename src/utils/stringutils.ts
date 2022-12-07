@@ -7,10 +7,20 @@ export function leadingZeroDay(day: string | number) {
 export function patternMatch(input: string, matcher:string) {
   // https://digitalfortress.tech/tips/top-15-commonly-used-regex/
   // https://javascript.plainenglish.io/the-7-most-commonly-used-regular-expressions-in-javascript-bb4e98288ca6
-  const regExpMap:Record<string, string> = {
-    $int: '(\\d+)',
-    $str: '([a-zA-Z]+)',
-    $float: '(\\d*\\.\\d+)',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const regExpMap:Record<string, { regexp:string, initializer:(input:string) => any }> = {
+    $int: {
+      regexp: '(\\d+)',
+      initializer: Number,
+    },
+    $str: {
+      regexp: '([a-zA-Z]+)',
+      initializer: String,
+    },
+    $float: {
+      regexp: '(\\d*\\.\\d+)',
+      initializer: Number,
+    },
   }
 
   const tokenMatcher = `${Object.keys(regExpMap).map(_.escapeRegExp).map(c => `(${c})`).join('|')}`
@@ -20,17 +30,24 @@ export function patternMatch(input: string, matcher:string) {
     throw new Error('No tokens were found in the input string')
   }
 
-  let finalRegExp = matcher;
+  let inputMatcherRegExp = matcher;
   Object.keys(regExpMap).forEach(key => {
-    finalRegExp = finalRegExp.replace(new RegExp(_.escapeRegExp(key), 'g'), regExpMap[key])
+    inputMatcherRegExp = inputMatcherRegExp.replace(new RegExp(_.escapeRegExp(key), 'g'), regExpMap[key].regexp)
   })
 
-  const match = input.match(new RegExp(finalRegExp));
+  let matches = input.match(new RegExp(inputMatcherRegExp));
 
-  if (match === null) {
+  if (matches === null) {
     return tokens.map(t => null)
-    throw new Error('Cannot match the regular expresion')
+  }
+  // Drop the full match
+  matches = matches.slice(1);
+
+  // Safe check
+  if (matches.length !== tokens.length || matches.length < 1) {
+    return tokens.map(t => null)
   }
 
-  return match.slice(1)
+  // Return inputs in the matching type
+  return matches.map((match, index) => regExpMap[tokens[index]].initializer(match))
 }
