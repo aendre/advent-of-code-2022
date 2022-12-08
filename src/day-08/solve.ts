@@ -9,16 +9,10 @@ function isVisible(tree: number, direction:number[][]) {
   return direction.some(col => col.every(c => c < tree))
 }
 
-function scenicScore(tree: number, direction:number[][]) {
-  const scores = direction.map(d => {
-    let score = 0
-    for (let i = 0; i < d.length; i += 1) {
-      score += 1
-      if (d[i] > tree || d[i] === tree) {
-        break
-      }
-    }
-    return score
+function scenicScore(tree: number, directions:number[][]) {
+  const scores = directions.map(direction => {
+    const visibleDistance = _.takeWhile(direction, (t, index) => (t > tree || t === tree));
+    return visibleDistance.length
   })
 
   return scores.reduce((a, b) => a * b)
