@@ -43,7 +43,7 @@ function createRopeImage(rope:ColoredKnot[], motionRange: MotionRange, step = 0)
   const canvas = createCanvas(width * magnify, height * magnify);
   const context = canvas.getContext('2d');
 
-  // Fill the rectangle with purple
+  // Fill the entire grid
   context.fillStyle = '#444444';
   context.fillRect(0, 0, width * magnify, height * magnify);
 
