@@ -5,23 +5,24 @@ import _ from 'lodash';
 import math from '../utils/mathUtils.js'
 import { readFromFolder } from '../utils/fileUtils.js';
 import { patternMatch } from '../utils/stringutils.js';
+import drawRopeSimulation from './bonus/drawRope.js'
 
-type Position = {
+export type Position = {
   x: number
   y: number
 }
 
-type Knot = {
+export type Knot = {
   pos : Position
   history: Position[]
 }
 
 function moveHead(H: Knot, direction: string) {
   switch (direction) {
-    case 'R': H.pos.x += 1; return;
-    case 'U': H.pos.y += 1; return;
-    case 'L': H.pos.x -= 1; return;
-    case 'D': H.pos.y -= 1;
+    case 'R': H.pos.x += 1; break;
+    case 'U': H.pos.y += 1; break;
+    case 'L': H.pos.x -= 1; break;
+    case 'D': H.pos.y -= 1; break;
   }
   H.history.push({ ...H.pos })
 }
@@ -70,4 +71,6 @@ export default function solve() {
     }
   });
   console.log('RESULT', uniquePositions(rope[ropeLength - 1]))
+
+  drawRopeSimulation(rope, 10)
 }
