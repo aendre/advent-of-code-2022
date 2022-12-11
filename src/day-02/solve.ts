@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { readInputFile } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 export type MatchScore = {
   opponent: string,
@@ -63,7 +63,7 @@ function getSymbolToFilfull(match: MatchScore) {
 }
 
 export default function solve() {
-  const fileInput = readInputFile('day-02/example.txt');
+  const fileInput = readInput('input.txt')
   const matches = fileInput.split('\n')
     .map(row => mapToSameInput(row))
     .map(round => {

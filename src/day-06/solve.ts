@@ -1,8 +1,6 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { readFromFolder } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 function isUnique(input: string) {
   const sequence = Array.from(input)
@@ -10,8 +8,7 @@ function isUnique(input: string) {
 }
 
 export default function solve() {
-  const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const content = readFromFolder(dirname, 'input.txt')
+  const content = readInput('input.txt')
 
   const input = content;
   const windowSize = 4;

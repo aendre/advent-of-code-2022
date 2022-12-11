@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Sugar from 'sugar';
-import { readInputFile } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 export type Range = {
   lower: number,
@@ -28,7 +28,7 @@ function isOverlapping(left:Range, right:Range) {
 }
 
 export default function solve() {
-  const fileContent = readInputFile('day-04/input.txt');
+  const fileContent = readInput('input.txt')
 
   // Part I
   const result = Sugar.Array(fileContent.split('\n'))

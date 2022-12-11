@@ -1,9 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
-import path from 'path';
-import Sugar from 'sugar'
-import { fileURLToPath } from 'url';
-import { readFromFolder, readInputFile } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 type CraneCommand = {
   count: number;
@@ -34,8 +30,7 @@ function topBoxes(stacks: Array<Array<string>>) {
 }
 
 export default function solve() {
-  const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const content = readFromFolder(dirname, 'input.txt')
+  const content = readInput('input.txt')
 
   const fileContent = content.split('\n');
 

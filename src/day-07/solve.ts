@@ -1,8 +1,6 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import _ from 'lodash';
+import { readInput } from '../utils/aoc.js';
 import math from '../utils/mathUtils.js'
-import { readFromFolder } from '../utils/fileUtils.js';
 import { patternMatch } from '../utils/stringutils.js';
 
 enum Command {
@@ -44,8 +42,7 @@ function getFolders(folder: Folder) : Array<Folder> {
 }
 
 export default function solve() {
-  const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const content = readFromFolder(dirname, 'input.txt')
+  const content = readInput('input.txt')
 
   const terminal = content.split('\n').filter(line => line !== '$ ls').slice(1);
 

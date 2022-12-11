@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { readInputFile } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 export default function solve() {
-  const fileContent = readInputFile('day-01/example.txt');
+  const fileContent = readInput('input.txt')
 
   // Part I
   const result = fileContent.split('\n\n')

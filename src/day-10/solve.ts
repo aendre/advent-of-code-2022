@@ -1,13 +1,10 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { readFromFolder } from '../utils/fileUtils.js';
 import { patternMatch } from '../utils/stringutils.js';
+import { readInput } from '../utils/aoc.js';
 
 export default function solve() {
-  const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const content = readFromFolder(dirname, 'input.txt')
+  const content = readInput('input.txt')
 
   const ticks:number[] = []
   content.split('\n').forEach(r => {

@@ -3,15 +3,29 @@ import * as fs from 'fs';
 import path from 'path'
 import { leadingZeroDay } from './stringutils.js';
 
-export function readInputFile(filepath: string) {
-  return fs.readFileSync(`./src/${filepath}`, 'utf8');
+const dayOfAoc = process.argv[2] || new Date().getDate();
+
+export const aoc = {
+  day: dayOfAoc,
+  dday: leadingZeroDay(dayOfAoc),
+  year: 2022,
 }
 
-export function readFromFolder(folder: string, filename: string) {
+export function startDay() {
+  console.time('AoC execution')
+  console.log('\x1b[33m%s\x1b[0m', `\n 🎄 Day ${aoc.dday}`); // cyan
+}
+
+export function endDay() {
+  console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
+  console.timeEnd('AoC execution')
+}
+
+export function readInput(filename: string) {
   console.log('\x1b[33m%s\x1b[0m', ` 🚀 ${filename}`);
   console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
-  const filepath = path.join(folder, filename)
-  return fs.readFileSync(filepath, 'utf8');
+  const filePath = `src/day-${aoc.dday}/${filename}`;
+  return fs.readFileSync(filePath, 'utf8');
 }
 
 export async function downloadInput(year: string, day: string | number, sessionCookie: string) {

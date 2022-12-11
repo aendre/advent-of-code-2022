@@ -1,11 +1,9 @@
 /* eslint-disable no-param-reassign */
-import path from 'path';
-import { fileURLToPath } from 'url';
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { readFromFolder } from '../utils/fileUtils.js';
 import { patternMatch } from '../utils/stringutils.js';
 import drawRopeSimulation from './bonus/drawRope.js'
+import { readInput } from '../utils/aoc.js';
 
 export type Position = {
   x: number
@@ -51,8 +49,7 @@ function uniquePositions(ropeEnd:Knot) {
 }
 
 export default function solve() {
-  const dirname = path.dirname(fileURLToPath(import.meta.url));
-  const content = readFromFolder(dirname, 'input.txt')
+  const content = readInput('input.txt')
 
   const moves = content.split('\n').map(c => patternMatch(c, '$str $int'))
 

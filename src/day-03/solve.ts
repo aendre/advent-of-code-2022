@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { readInputFile } from '../utils/fileUtils.js';
+import { readInput } from '../utils/aoc.js';
 
 function splitToChars(input: string) {
   return Array.from(input);
@@ -14,7 +14,7 @@ function assignPriority(input:string) {
 }
 
 export default function solve() {
-  const fileContent = readInputFile('day-03/input.txt');
+  const fileContent = readInput('input.txt')
 
   // Part I
   const result = fileContent.split('\n')
