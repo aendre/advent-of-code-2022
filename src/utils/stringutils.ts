@@ -13,6 +13,10 @@ export function patternMatch(input: string, matcher:string) {
       regexp: '(\\d+)',
       initializer: Number,
     },
+    $signedint: {
+      regexp: '([-+]?\\d+)',
+      initializer: Number,
+    },
     $str: {
       regexp: '([a-zA-Z]+)',
       initializer: String,
