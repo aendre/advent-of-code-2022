@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import math from '../utils/mathUtils.js'
+import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 
 function isVisible(tree: number, direction:number[][]) {

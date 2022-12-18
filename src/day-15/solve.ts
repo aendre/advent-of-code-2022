@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import _ from 'lodash';
-import math from '../utils/mathUtils.js'
+import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 
 type P = {

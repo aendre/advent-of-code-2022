@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
-import math from '../utils/mathUtils.js'
+import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 
 export default function solve() {

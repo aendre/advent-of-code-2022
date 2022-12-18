@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import _ from 'lodash';
 import graphlib, { Graph } from '@dagrejs/graphlib'
-import math from '../utils/mathUtils.js'
+import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 
 type Cube = [number, number, number]
