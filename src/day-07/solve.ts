@@ -1,7 +1,5 @@
 import _ from 'lodash';
-import { readInput } from '../utils/aoc.js';
-import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
+import * as aoc from '../utils/aoc.js';
 
 enum Command {
   Back = 'back',
@@ -42,7 +40,7 @@ function getFolders(folder: Folder) : Array<Folder> {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
   const terminal = content.split('\n').filter(line => line !== '$ ls').slice(1);
 
@@ -58,7 +56,7 @@ export default function solve() {
     const command = getCommand(line)
     // Process files
     if (command === null) {
-      const [fileSize, fileName] = patternMatch(line, '$int $str')
+      const [fileSize, fileName] = aoc.patternMatch(line, '$int $str')
       if (fileName !== null) {
         currentNode.files.push({
           name: fileName,
@@ -67,7 +65,7 @@ export default function solve() {
       }
     // Process folder
     } else if (command === Command.ListDir) {
-      const [folderName] = patternMatch(line, 'dir $str')
+      const [folderName] = aoc.patternMatch(line, 'dir $str')
       currentNode.folders.push({
         name: folderName,
         files: [],
@@ -76,7 +74,7 @@ export default function solve() {
       })
     // Process changing to directory
     } else if (command === Command.ChangeDir) {
-      const [cdDir] = patternMatch(line, '\\$ cd $str');
+      const [cdDir] = aoc.patternMatch(line, '\\$ cd $str');
       const matchingDirectory = currentNode.folders.find(f => f.name === cdDir)
       if (matchingDirectory) {
         currentNode = matchingDirectory

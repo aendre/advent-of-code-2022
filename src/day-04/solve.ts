@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import Sugar from 'sugar';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 export type Range = {
   lower: number,
@@ -28,19 +27,19 @@ function isOverlapping(left:Range, right:Range) {
 }
 
 export default function solve() {
-  const fileContent = readInput('input.txt')
+  const fileContent = aoc.readInput('input.txt')
 
   // Part I
-  const result = Sugar.Array(fileContent.split('\n'))
+  const result = fileContent.split('\n')
     .map(pairs => pairs.split(',')
       .map(pair => pair.split('-'))
       .map(pair => ({ lower: parseInt(pair[0], 10), upper: parseInt(pair[1], 10) })))
 
   const part1 = result.map(pairs => isFullyContain(pairs[0], pairs[1]))
     .map(pair => (pair === true ? 1 : 0))
-  console.log('RESULT PART I', part1.sum());
+  console.log('RESULT PART I', _.sum(part1));
 
   const part2 = result.map(pairs => isOverlapping(pairs[0], pairs[1]))
     .map(pair => (pair === true ? 1 : 0))
-  console.log('RESULT PART II', part2.sum());
+  console.log('RESULT PART II', _.sum(part2));
 }

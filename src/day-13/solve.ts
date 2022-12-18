@@ -3,10 +3,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from 'lodash';
-import { type } from 'os';
-import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 function areArrays(...args: any[]) {
   return Array.from(args).every(Array.isArray)
@@ -57,7 +54,7 @@ function compare(left: any, right:any):number {
 }
 
 export default function solve() {
-  const content = readInput('input.txt');
+  const content = aoc.readInput('input.txt');
 
   const part1Input = content.split('\n\n')
   const pairs = part1Input

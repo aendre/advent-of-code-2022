@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import math from '../utils/mathUtils.js'
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 function isUnique(input: string) {
   const sequence = Array.from(input)
@@ -8,7 +7,7 @@ function isUnique(input: string) {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
   const input = content;
   const windowSize = 4;

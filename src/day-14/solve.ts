@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 // Tuple type
 type Coordinate = [number, number];
@@ -83,7 +82,7 @@ function simulateWithFloor(solid:Set<string>, limit:number) {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
     .split('\n')
     .map(c => c.split(' -> ')
       .map(cord => cord.split(',')

@@ -1,8 +1,6 @@
-import {
-  autoDownload, aoc, endDay, startDay,
-} from './utils/aoc.js';
+import * as aoc from './utils/aoc.js';
 
-startDay()
-await autoDownload(aoc.day);
-(await import(`./day-${aoc.dday}/solve.js`)).default();
-endDay()
+aoc.startDay()
+await aoc.autoDownload(aoc.puzzle.day);
+(await import(`./day-${aoc.puzzle.dday}/solve.js`)).default();
+aoc.endDay()

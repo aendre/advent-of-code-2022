@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 type CraneCommand = {
   count: number;
@@ -30,7 +30,7 @@ function topBoxes(stacks: Array<Array<string>>) {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
   const fileContent = content.split('\n');
 

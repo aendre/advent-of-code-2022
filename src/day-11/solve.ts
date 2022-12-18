@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
   const monkeys = content.split('\n\n').map(row => {
     const [monkey, items, operation, divisible, yesToMonkey, noToMonkey] = row.replace('  Starting items: ', '')

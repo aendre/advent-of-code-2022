@@ -7,8 +7,7 @@
 
 import _ from 'lodash';
 import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 type P = {
   x:number;
@@ -121,9 +120,9 @@ function part2(sensors: Sensor[], file:string) {
 
 export default function solve() {
   const fileName = 'input.txt';
-  const content = readInput(fileName)
+  const content = aoc.readInput(fileName)
     .split('\n')
-    .map(s => patternMatch(s, 'Sensor at x=$signedint, y=$signedint: closest beacon is at x=$signedint, y=$signedint') as number[])
+    .map(s => aoc.patternMatch(s, 'Sensor at x=$signedint, y=$signedint: closest beacon is at x=$signedint, y=$signedint') as number[])
 
   const sensors = content.map(c => new Sensor(...c))
 

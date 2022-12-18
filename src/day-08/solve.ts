@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import { readInput } from '../utils/aoc.js';
 import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
+import * as aoc from '../utils/aoc.js';
 
 function isVisible(tree: number, direction:number[][]) {
   return direction.some(col => col.every(c => c < tree))
@@ -17,7 +16,7 @@ function scenicScore(tree: number, directions:number[][]) {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
   const forest = content.split('\n').map(s => [...s].map(Number));
   const width = forest[0].length;

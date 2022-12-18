@@ -4,7 +4,6 @@
 import _ from 'lodash';
 import graphlib, { Graph } from '@dagrejs/graphlib'
 import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
 import * as aoc from '../utils/aoc.js';
 
 type Cube = [number, number, number]

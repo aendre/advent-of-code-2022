@@ -1,18 +1,21 @@
 import axios from 'axios';
 import * as fs from 'fs';
-import path from 'path'
-import { leadingZeroDay } from './stringutils.js';
+import _ from 'lodash';
 
 const dayOfAoc = process.argv[2] || new Date().getDate();
 
-export const aoc = {
+export function leadingZeroDay(day: string | number) {
+  return (`0${day}`).slice(-2); // Day with leadin zeroes
+}
+
+export const puzzle = {
   day: dayOfAoc,
   dday: leadingZeroDay(dayOfAoc),
   year: 2022,
 }
 
 export function startDay() {
-  console.log('\x1b[33m%s\x1b[0m', `\n 🎄 Day ${aoc.dday}`); // cyan
+  console.log('\x1b[33m%s\x1b[0m', `\n 🎄 Day ${puzzle.dday}`); // cyan
 }
 
 export function endDay() {
@@ -24,7 +27,7 @@ export function endDay() {
 export function readInput(filename: string) {
   console.log('\x1b[33m%s\x1b[0m', ` 🚀 ${filename}`);
   console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
-  const filePath = `src/day-${aoc.dday}/${filename}`;
+  const filePath = `src/day-${puzzle.dday}/${filename}`;
   const fileContent = fs.readFileSync(filePath, 'utf8');
   console.time('AoC execution')
   return fileContent
@@ -69,4 +72,56 @@ export async function autoDownload(day: string | number) {
     })
     console.log('\x1b[33m%s\x1b[0m', ` 🏗️  New input downloaded: ${filePath}`);
   }
+}
+
+export function patternMatch(str: string, matcher:string) {
+  // https://digitalfortress.tech/tips/top-15-commonly-used-regex/
+  // https://javascript.plainenglish.io/the-7-most-commonly-used-regular-expressions-in-javascript-bb4e98288ca6
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const regExpMap:Record<string, { regexp:string, initializer:(input:string) => any }> = {
+    $int: {
+      regexp: '(\\d+)',
+      initializer: Number,
+    },
+    $signedint: {
+      regexp: '([-+]?\\d+)',
+      initializer: Number,
+    },
+    $str: {
+      regexp: '([a-zA-Z]+)',
+      initializer: String,
+    },
+    $float: {
+      regexp: '(\\d*\\.\\d+)',
+      initializer: Number,
+    },
+  }
+
+  const tokenMatcher = `${Object.keys(regExpMap).map(_.escapeRegExp).map(c => `(${c})`).join('|')}`
+
+  const tokens = matcher.match(new RegExp(tokenMatcher, 'g'))
+  if (tokens === null) {
+    throw new Error('No tokens were found in the input string')
+  }
+
+  let inputMatcherRegExp = matcher;
+  Object.keys(regExpMap).forEach(key => {
+    inputMatcherRegExp = inputMatcherRegExp.replace(new RegExp(_.escapeRegExp(key), 'g'), regExpMap[key].regexp)
+  })
+
+  let matches = str.match(new RegExp(inputMatcherRegExp));
+
+  if (matches === null) {
+    return tokens.map(t => null)
+  }
+  // Drop the full match
+  matches = matches.slice(1) as RegExpMatchArray;
+
+  // Safe check
+  if (matches.length !== tokens.length || matches.length < 1) {
+    return tokens.map(t => null)
+  }
+
+  // Return inputs in the matching type
+  return matches.map((match, index) => regExpMap[tokens[index]].initializer(match))
 }

@@ -1,9 +1,7 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
-import math from '../utils/mathUtils.js'
-import { patternMatch } from '../utils/stringutils.js';
 import drawRopeSimulation from './bonus/drawRope.js'
-import { readInput } from '../utils/aoc.js';
+import * as aoc from '../utils/aoc.js';
 
 export type Position = {
   x: number
@@ -49,9 +47,9 @@ function uniquePositions(ropeEnd:Knot) {
 }
 
 export default function solve() {
-  const content = readInput('input.txt')
+  const content = aoc.readInput('input.txt')
 
-  const moves = content.split('\n').map(c => patternMatch(c, '$str $int'))
+  const moves = content.split('\n').map(c => aoc.patternMatch(c, '$str $int'))
 
   // Initialize
   const ropeLength = 10;
