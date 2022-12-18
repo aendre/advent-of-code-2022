@@ -12,20 +12,29 @@ export const aoc = {
 }
 
 export function startDay() {
-  console.time('AoC execution')
   console.log('\x1b[33m%s\x1b[0m', `\n 🎄 Day ${aoc.dday}`); // cyan
 }
 
 export function endDay() {
   console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
   console.timeEnd('AoC execution')
+  console.log('\n')
 }
 
 export function readInput(filename: string) {
   console.log('\x1b[33m%s\x1b[0m', ` 🚀 ${filename}`);
   console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
   const filePath = `src/day-${aoc.dday}/${filename}`;
-  return fs.readFileSync(filePath, 'utf8');
+  const fileContent = fs.readFileSync(filePath, 'utf8');
+  console.time('AoC execution')
+  return fileContent
+}
+
+export function input() {
+  return readInput('input.txt')
+}
+export function inputE() {
+  return readInput('example.txt')
 }
 
 export async function downloadInput(year: string, day: string | number, sessionCookie: string) {
