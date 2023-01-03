@@ -4,11 +4,15 @@ This is my repo of utilities and solutions for the Advent of Code 2022 written i
 
 ## Usage
 
-Run `npm start <day>` to start solving the puzzle of the selected day. This will:
+Run `npm start <day> <year>` to start solving the puzzle of the selected day. This will:
 - Automatically download your personalized input and copy to `src/day-XX/input.txt`
 - Invoke the default export function located at `src/day-XX/solve.ts`
 
-`npm start` will default the day to the current day.
+`npm start` will default to the current day in the current year.
+
+`npm start 17` will default to day 17 in the current year.
+
+`npm start 5 2020` will use the input of day 5 in year 2020.
 
 ## Auto-download 
 - Create a file named `.session.cfg`

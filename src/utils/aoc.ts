@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import _ from 'lodash';
 
 const dayOfAoc = process.argv[2] || new Date().getDate();
+const yearOfAoc = process.argv[3] || new Date().getFullYear().toString();
 
 export function leadingZeroDay(day: string | number) {
   return (`0${day}`).slice(-2); // Day with leadin zeroes
@@ -11,11 +12,11 @@ export function leadingZeroDay(day: string | number) {
 export const puzzle = {
   day: dayOfAoc,
   dday: leadingZeroDay(dayOfAoc),
-  year: 2022,
+  year: yearOfAoc,
 }
 
 export function startDay() {
-  console.log('\x1b[33m%s\x1b[0m', `\n 🎄 Day ${puzzle.dday}`); // cyan
+  console.log('\x1b[33m%s\x1b[0m', `\n 🎄 ${puzzle.year}, Day ${puzzle.dday}`); // cyan
 }
 
 export function endDay() {
@@ -53,11 +54,12 @@ export async function downloadInput(year: string, day: string | number, sessionC
 }
 
 export async function autoDownload(day: string | number) {
-  const now = new Date();
   const dayday = leadingZeroDay(day);
-  const year = now.getFullYear().toString();
+  const { year } = puzzle;
+  const now = new Date();
+  const aocDate = new Date(`${year}-12-${dayday}`)
 
-  if (Number(day) > now.getDate()) {
+  if (aocDate > now) {
     console.log('\x1b[33m%s\x1b[0m', ' 🏗️  No input downloaded from the future');
     return
   }

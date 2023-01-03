@@ -4,7 +4,7 @@ import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 
 // Tuple type
-type Coordinate = [number, number];
+export type Coordinate = [number, number];
 const toKey = (c:Coordinate) => `${c[0]}-${c[1]}`
 
 function convertToCordinates(anchorPoint:number[][]):Coordinate[] {
