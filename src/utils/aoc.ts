@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as fs from 'fs';
 import _ from 'lodash';
+import { createTemplate } from './template.js';
 
 const dayOfAoc = process.argv[2] || new Date().getDate();
 const yearOfAoc = process.argv[3] || new Date().getFullYear().toString();
@@ -17,6 +18,7 @@ export const puzzle = {
 
 export function startDay() {
   console.log('\x1b[33m%s\x1b[0m', `\n 🎄 ${puzzle.year}, Day ${puzzle.dday}`); // cyan
+  createTemplate(puzzle.dday)
 }
 
 export function endDay() {

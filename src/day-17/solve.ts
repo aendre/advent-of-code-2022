@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import graphlib, { Graph } from '@dagrejs/graphlib'
+import * as fs from 'fs';
 import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 import * as shapes from './shapes.js'
@@ -34,61 +35,62 @@ function initializeShape(shape: Coordinate[], top:number) {
   return moveShape(shape, [2, top + 3])
 }
 
-function getHighestPoint(arr: Coordinate[]) {
-  return Math.max(...arr.map(c => c[1]))
-}
-
 function withinChamberLimits(shape: Coordinate[]) {
   return shape.map(s => s[0]).every(c => c > 0 && c < 8)
 }
 
-function notCrushinhWithOthers(shape: Coordinate[], chamber:Coordinate[]) {
-  const chamberSet = new Set(chamber.map(c => c.join('-')))
-
+function notCrushinhWithOthers(shape: Coordinate[], chamberSet:Set<string>) {
   return shape.every(s => !chamberSet.has(s.join('-')))
 }
 
-function print(chamber: Coordinate[], maxHeight:number) {
+function printChamber(chamber: Set<string>, maxHeight:number, toFile = false) {
+  let content = ''
   for (let y = maxHeight; y > 0; y -= 1) {
-    let row = ''
     for (let x = 1; x < 8; x += 1) {
-      row += typeof chamber.find(c => c[0] === x && c[1] === y) === 'undefined' ? '.' : '#'
+      content += !chamber.has(`${x}-${y}`) ? '.' : '#'
     }
-    console.log(row)
+    content += '\n'
   }
-  console.log('\n\n')
+  content += '\n'
+  if (toFile) {
+    fs.writeFileSync('./print.txt', content)
+  } else {
+    console.log(content)
+  }
 }
 
 export default function solve() {
-  const input = aoc.inputE()
+  const input = aoc.input()
   const moves = [...input] as Move[]
   const chamber: Coordinate[] = [
     [0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], // Initialize the chamber with a floor
   ]
+  const chamberSet = new Set<string>(chamber.map(c => c.join('-')))
 
   const jetIterator = cyclicIterator(moves)
   const shapeIterator = cyclicIterator([shapes.shapeDash, shapes.shapePlus, shapes.shapeL, shapes.shapeI, shapes.shapeSquare])
-
-  Array(2).fill('').forEach(() => {
-    let shape = [...initializeShape(shapeIterator.next().value, getHighestPoint(chamber))]
+  let highestPoint = 0
+  Array(2022).fill('').forEach(() => {
+    let shape = [...initializeShape(shapeIterator.next().value, highestPoint)]
     let moving = true
     while (moving) {
       // Move to left/right
       const shiftedShape = moveShape(shape, moveMap[jetIterator.next().value])
-      shape = withinChamberLimits(shiftedShape) && notCrushinhWithOthers(shiftedShape, chamber) ? shiftedShape : shape
+      shape = withinChamberLimits(shiftedShape) && notCrushinhWithOthers(shiftedShape, chamberSet) ? shiftedShape : shape
       // Move one position down
       const movedDownShape = moveShape(shape, moveMap[Move.Down])
 
       // If settled add it the the chamber
-      if (notCrushinhWithOthers(movedDownShape, chamber)) {
+      if (notCrushinhWithOthers(movedDownShape, chamberSet)) {
         shape = movedDownShape
       } else {
         moving = false
-        chamber.push(...shape)
+        shape.forEach(c => chamberSet.add(c.join('-')))
       }
     }
+    highestPoint = Math.max(highestPoint, ...shape.map(s => s[1]))
   })
 
-  // print(chamber, getHighestPoint(chamber))
-  console.log('Part I', getHighestPoint(chamber))
+  // printChamber(chamberSet, highestPoint, true)
+  console.log('Part I', highestPoint)
 }
