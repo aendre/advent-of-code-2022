@@ -24,7 +24,6 @@ export function startDay() {
 export function endDay() {
   console.log('\x1b[32m%s\x1b[0m', '----------------------------------------------------------')
   console.timeEnd('AoC execution')
-  console.log('\n')
 }
 
 export function readInput(filename: string) {
