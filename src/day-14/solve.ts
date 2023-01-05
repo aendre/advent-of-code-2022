@@ -2,9 +2,8 @@
 import _ from 'lodash';
 import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
+import { Coordinate } from '../utils/2D.js';
 
-// Tuple type
-export type Coordinate = [number, number];
 const toKey = (c:Coordinate) => `${c[0]}-${c[1]}`
 
 function convertToCordinates(anchorPoint:number[][]):Coordinate[] {

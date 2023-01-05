@@ -1,4 +1,4 @@
-import { Coordinate } from '../day-14/solve'
+import { Coordinate } from '../utils/2D'
 
 export const shapeDash: Coordinate[] = [
   [1, 1], [2, 1], [3, 1], [4, 1],
