@@ -85,10 +85,20 @@ function emptyTiles(elves: Point2D[]) {
 export default function solve() {
   const input = aoc.input().split('\n').reverse();
   const elvesPositions = initialElvesPositions(input)
-  let result = elvesPositions
 
+  // Part I
+  let result = [...elvesPositions]
   for (let i = 0; i < 10; i += 1) {
     result = round(result, i)
   }
   console.log('Part I', emptyTiles(result))
+
+  // Part II
+  let result2 = [...elvesPositions]
+  let roundCount = 0
+  do {
+    result2 = round(result2, roundCount)
+    roundCount += 1
+  } while (someElvesMove(result2))
+  console.log('Part II', roundCount + 1)
 }
