@@ -39,7 +39,7 @@ function someElvesMove(elves:Point2D[]) {
   const allDirections = ['N', 'W', 'E', 'S', 'NW', 'NE', 'SW', 'SE']
   const elfPositions = new Set(elves.map(e => e.key))
 
-  return elves.some(elf => !allDirections.every(d => !elfPositions.has(elf.moveTo(d).key)))
+  return elves.some(elf => !allDirections.every(d => !elfPositions.has(elf.stepOnCartesian(d).key)))
 }
 
 function firstHalf(elves:Point2D[], nthRound:number) {
@@ -51,15 +51,15 @@ function firstHalf(elves:Point2D[], nthRound:number) {
 
   return elves.map(elf => {
     // Elf is not moving because every direction is free around him
-    if (allDirections.every(d => !elfPositions.has(elf.moveTo(d).key))) {
+    if (allDirections.every(d => !elfPositions.has(elf.stepOnCartesian(d).key))) {
       return elf
     }
 
     // Go through each possible direction
     for (let i = 0; i < movesForThisRound.length; i += 1) {
       // If all conditions are filfulled, move into that direction
-      if (movesForThisRound[i].condition.every(d => !elfPositions.has(elf.moveTo(d).key))) {
-        return elf.moveTo(movesForThisRound[i].direction)
+      if (movesForThisRound[i].condition.every(d => !elfPositions.has(elf.stepOnCartesian(d).key))) {
+        return elf.stepOnCartesian(movesForThisRound[i].direction)
       }
     }
 

@@ -128,3 +128,44 @@ export function patternMatch(str: string, matcher:string) {
   // Return inputs in the matching type
   return matches.map((match, index) => regExpMap[tokens[index]].initializer(match))
 }
+
+export class AocInput {
+  private content: string
+
+  private usedFile: string
+
+  static EXAMPLE_FILE = 'example.txt'
+
+  static REAL_INPUT = 'input.txt'
+
+  private useInput(inputFile:string) {
+    this.usedFile = inputFile
+  }
+
+  private load() {
+    this.content = readInput(this.usedFile)
+  }
+
+  useExample() {
+    this.useInput(AocInput.EXAMPLE_FILE);
+    this.load()
+    return this
+  }
+
+  useRealInput() {
+    this.useInput(AocInput.REAL_INPUT);
+    this.load()
+    return this
+  }
+
+  get raw() {
+    if (typeof this.content !== 'string' || this.content.length < 1) {
+      throw Error(`Input (${this.usedFile}) was not read or empty.`)
+    }
+    return this.content
+  }
+
+  get lines() {
+    return this.raw.split('\n')
+  }
+}
