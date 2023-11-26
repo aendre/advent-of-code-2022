@@ -155,6 +155,10 @@ export class Point2D<T = unknown> {
     return this.y >= min && this.y <= max
   }
 
+  manhattanDistanceTo(p: Point2D) {
+    return Math.abs(this.x - p.x) + Math.abs(this.y - p.y)
+  }
+
   get key() {
     return `${this.x}-${this.y}`
   }

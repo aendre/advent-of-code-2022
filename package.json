@@ -34,6 +34,7 @@
   "dependencies": {
     "@dagrejs/graphlib": "^2.1.4",
     "@types/chroma-js": "^2.1.4",
+    "ansis": "^2.0.2",
     "axios": "^1.2.0",
     "canvas": "^2.10.2",
     "chroma-js": "^2.4.2",
