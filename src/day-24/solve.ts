@@ -4,11 +4,27 @@ import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 import { commandToDirection, Point2D, Direction } from '../utils/2D.js';
 
-function print(map:Point2D[], elf: Point2D, end: Point2D, width: number, height:number) {
-  let str = `\n${width} x ${height} \n`
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const blizzards = map.filter(b => b.is([x, y]))
+type Blizzards = {
+  blizzards : Point2D[],
+  blizzardsIndex: Set<string>,
+  width: number,
+  height: number
+}
+
+type ElfInStorm = {
+  elf: Point2D,
+  minutes: number
+}
+
+function createBlizzardIndex(blizzards:Point2D[]): Set<string> {
+  return new Set(blizzards.map(b => b.key))
+}
+
+function print(map:Blizzards, elf: Point2D, end: Point2D) {
+  let str = `\n${map.width} x ${map.height} \n`
+  for (let y = 0; y < map.height; y += 1) {
+    for (let x = 0; x < map.width; x += 1) {
+      const blizzards = map.blizzards.filter(b => b.is([x, y]))
 
       if (blizzards.length) {
         str += blizzards.length === 1 ? blizzards[0].content : blizzards.length
@@ -20,27 +36,27 @@ function print(map:Point2D[], elf: Point2D, end: Point2D, width: number, height:
         str += '.'
       }
     }
-    if (y !== height - 1) { str += '\n' }
+    if (y !== map.height - 1) { str += '\n' }
   }
   console.log(str)
 }
 
-function moveBlizzards(blizzards:Point2D[], width: number, height:number) {
-  return blizzards.map(b => {
+function moveBlizzards(blizzardMap:Blizzards) :Blizzards {
+  const blizzards = blizzardMap.blizzards.map(b => {
     if (typeof b.content === 'string') {
       const direction = commandToDirection(b.content)
       const position = b.stepOnCanvas(direction)
 
       if (direction === Direction.Left && position.x <= 0) {
-        return b.setX(width - 2)
+        return b.setX(blizzardMap.width - 2)
       }
-      if (direction === Direction.Right && position.x >= width - 1) {
+      if (direction === Direction.Right && position.x >= blizzardMap.width - 1) {
         return b.setX(1)
       }
       if (direction === Direction.Up && position.y <= 0) {
-        return b.setY(height - 2)
+        return b.setY(blizzardMap.height - 2)
       }
-      if (direction === Direction.Down && position.y >= height - 1) {
+      if (direction === Direction.Down && position.y >= blizzardMap.height - 1) {
         return b.setY(1)
       }
 
@@ -48,20 +64,34 @@ function moveBlizzards(blizzards:Point2D[], width: number, height:number) {
     }
     return b
   })
+
+  return {
+    blizzards,
+    blizzardsIndex: createBlizzardIndex(blizzards),
+    width: blizzardMap.width,
+    height: blizzardMap.height,
+  }
 }
 
-function readBlizzards(input: string[][]) {
+function readBlizzards(input: string[][]): Blizzards {
   const blizzards: Point2D[] = []
   for (let y = 0; y < input.length; y += 1) {
     for (let x = 0; x < input[y].length; x += 1) {
       const i = input[y][x]
-      blizzards.push(new Point2D([x, y], i))
+      if (i !== '.') {
+        blizzards.push(new Point2D([x, y], i))
+      }
     }
   }
-  return blizzards.filter(b => b.content !== '.')
+  return {
+    blizzards,
+    blizzardsIndex: createBlizzardIndex(blizzards),
+    width: input[0].length,
+    height: input.length,
+  }
 }
 
-function moveElf(elf:Point2D, blizzards:Point2D[], width:number, height:number) : Point2D[] {
+function moveElf(elf:Point2D, blizzardMap:Blizzards) : Point2D[] {
   const directions = [
     Direction.Up,
     Direction.Down,
@@ -77,13 +107,13 @@ function moveElf(elf:Point2D, blizzards:Point2D[], width:number, height:number) 
     if (
       (
         movedTo.x > 0
-        && movedTo.x < width - 1
+        && movedTo.x < blizzardMap.width - 1
         && movedTo.y > 0
-        && movedTo.y < height - 1
-        && typeof blizzards.find(b => b.is(movedTo.xy)) === 'undefined'
+        && movedTo.y < blizzardMap.height - 1
+        && !blizzardMap.blizzardsIndex.has(movedTo.key)
       )
       || movedTo.is([1, 0])
-      || movedTo.is([width - 2, height - 1])
+      || movedTo.is([blizzardMap.width - 2, blizzardMap.height - 1])
     ) {
       possibleMoves.push(movedTo)
     }
@@ -92,28 +122,21 @@ function moveElf(elf:Point2D, blizzards:Point2D[], width:number, height:number) 
   return possibleMoves
 }
 
-type ElfInStorm = {
-  blizzards : Point2D[],
-  elf: Point2D,
-  minutes: number
-}
-
 // eslint-disable-next-line func-names
-let blizzardsAfterStorm = function (minutes: number, blizzards: Point2D[], width:number, height:number) : Point2D[] {
+let blizzardsAfterStorm = function (minutes: number, blizzardMap: Blizzards) : Blizzards {
   if (minutes <= 0) {
-    return blizzards
+    return blizzardMap
   }
   if (minutes === 1) {
-    return moveBlizzards(blizzards, width, height)
+    return moveBlizzards(blizzardMap)
   }
-  return moveBlizzards(blizzardsAfterStorm(minutes - 1, blizzards, width, height), width, height)
+  return moveBlizzards(blizzardsAfterStorm(minutes - 1, blizzardMap))
 }
 
 blizzardsAfterStorm = _.memoize(blizzardsAfterStorm)
 
-function bfs(blizzards: Point2D[], elf:Point2D, target:Point2D, width: number, height:number) {
-  const visited = new Set<string>();
-  const root = { blizzards, elf, minutes: 0 }
+function bfs(blizzards: Blizzards, elf:Point2D, target:Point2D) {
+  const root = { elf, minutes: 0 }
   const queue:ElfInStorm[] = [root];
 
   let iter = 0
@@ -128,11 +151,10 @@ function bfs(blizzards: Point2D[], elf:Point2D, target:Point2D, width: number, h
       return iter
     }
 
-    const newBlizzards = blizzardsAfterStorm(storm.minutes, blizzards, width, height);
-    const elfMoves = moveElf(storm.elf, newBlizzards, width, height);
+    const newBlizzards = blizzardsAfterStorm(storm.minutes, blizzards);
+    const elfMoves = moveElf(storm.elf, newBlizzards);
 
     const newStates:ElfInStorm[] = elfMoves.map(e => ({
-      blizzards: [...newBlizzards],
       elf: e,
       minutes: storm.minutes + 1,
     }))
@@ -158,16 +180,17 @@ export default function solve() {
   const target = new Point2D([width - 2, height - 1])
   let blizzards = readBlizzards(input);
 
-  // print(blizzards, elf, target, width, height)
-  // blizzards = moveBlizzards(blizzards, width, height);
-  // blizzards = moveBlizzards(blizzards, width, height);
-  // blizzards = moveBlizzards(blizzards, width, height);
+  // print(blizzards, elf, target)
+  // blizzards = moveBlizzards(blizzards);
+  // print(blizzards, elf, target)
+  // blizzards = moveBlizzards(blizzards);
+  // blizzards = moveBlizzards(blizzards);
 
-  // print(blizzards, elf, target, width, height)
-  blizzards = blizzardsAfterStorm(23099, blizzards, width, height)
-  print(blizzards, elf, target, width, height)
+  // print(blizzards, elf, target)
+  // blizzards = blizzardsAfterStorm(23099, blizzards)
+  // print(blizzards, elf, target)
 
-  // bfs(blizzards, elf, target, width, height)
+  bfs(blizzards, elf, target)
 
-  // print(blizzards, elf, width, height)
+  // print(blizzards, elf)
 }
