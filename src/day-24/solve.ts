@@ -135,8 +135,9 @@ let blizzardsAfterStorm = function (minutes: number, blizzardMap: Blizzards) : B
 
 blizzardsAfterStorm = _.memoize(blizzardsAfterStorm)
 
-function bfs(blizzards: Blizzards, elf:Point2D, target:Point2D) {
-  const root = { elf, minutes: 0 }
+function bfs(blizzards: Blizzards, elf:Point2D, target:Point2D, initMinutes = 0) : number {
+  const root = { elf, minutes: initMinutes }
+  const visited = new Set<string>();
   const queue:ElfInStorm[] = [root];
 
   let iter = 0
@@ -147,21 +148,24 @@ function bfs(blizzards: Blizzards, elf:Point2D, target:Point2D) {
     iter += 1
 
     if (storm.elf.key === target.key) {
-      console.log(`Found it after ${storm.minutes} minutes, and ${iter} iterations`)
-      return iter
+      console.log(`Found it after ${storm.minutes - 1} minutes, and ${iter} iterations`)
+      return storm.minutes - 1
     }
 
     const newBlizzards = blizzardsAfterStorm(storm.minutes, blizzards);
-    const elfMoves = moveElf(storm.elf, newBlizzards);
+    const newElfMoves = moveElf(storm.elf, newBlizzards);
 
-    const newStates:ElfInStorm[] = elfMoves.map(e => ({
-      elf: e,
-      minutes: storm.minutes + 1,
-    }))
-
-    if (newStates.length) {
-      queue.push(...newStates)
-    }
+    const nextMinute = storm.minutes + 1
+    newElfMoves.forEach(newElfPosition => {
+      if (!visited.has(`${newElfPosition.key}-${nextMinute}`)) {
+        visited.add(`${newElfPosition.key}-${nextMinute}`);
+        const queueElement = {
+          elf: newElfPosition,
+          minutes: storm.minutes + 1,
+        }
+        queue.push(queueElement);
+      }
+    })
   }
   console.log(`Exiting after ${iter}`)
   return Infinity
@@ -169,28 +173,19 @@ function bfs(blizzards: Blizzards, elf:Point2D, target:Point2D) {
 
 export default function solve() {
   const input = new aoc.AocInput()
-    .useRealInput()
+    .useExample()
     .lines
     .map(line => line.split(''))
 
   const height = input.length;
   const width = input[0].length;
 
-  let elf = new Point2D([1, 0])
+  const elf = new Point2D([1, 0])
   const target = new Point2D([width - 2, height - 1])
-  let blizzards = readBlizzards(input);
+  const blizzards = readBlizzards(input);
 
-  // print(blizzards, elf, target)
-  // blizzards = moveBlizzards(blizzards);
-  // print(blizzards, elf, target)
-  // blizzards = moveBlizzards(blizzards);
-  // blizzards = moveBlizzards(blizzards);
-
-  // print(blizzards, elf, target)
-  // blizzards = blizzardsAfterStorm(23099, blizzards)
-  // print(blizzards, elf, target)
-
-  bfs(blizzards, elf, target)
-
-  // print(blizzards, elf)
+  const time1 = bfs(blizzards, elf, target)
+  const time2 = bfs(blizzards, target, elf, time1)
+  const time3 = bfs(blizzards, elf, target, time2)
+  console.log(time1, time2, time3)
 }
