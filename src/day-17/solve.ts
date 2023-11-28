@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import math from '../utils/math.js'
 import * as aoc from '../utils/aoc.js';
 import * as shapes from './shapes.js'
-import { Coordinate } from '../day-14/solve.js';
+import { Coordinate } from '../utils/2D.js';
 
 enum Move {
   Left = '<',
@@ -53,7 +53,7 @@ function printChamber(chamber: Set<string>, maxHeight:number, toFile = false) {
   }
   content += '\n'
   if (toFile) {
-    fs.writeFileSync('./print.txt', content)
+    fs.writeFileSync('./src/day-17/print.txt', content)
   } else {
     console.log(content)
   }
@@ -93,4 +93,10 @@ export default function solve() {
 
   // printChamber(chamberSet, highestPoint, true)
   console.log('Part I', highestPoint)
+
+  const magic = 1700
+  const base = 1_000_000_000_000 - 674
+  const repeating = Math.floor(base / magic)
+  const remaining = base % magic
+  console.log('Part 2', 1034 + 1913 + repeating * 2654)
 }
