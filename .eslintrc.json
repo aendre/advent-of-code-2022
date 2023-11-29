@@ -27,6 +27,7 @@
       "default-case": "off",
       //https://stackoverflow.com/questions/45443478/eslint-autofix-ignore-rule
       "prefer-const": "off",
-      "no-autofix/prefer-const": "warn"
+      "no-autofix/prefer-const": "warn",
+      "@typescript-eslint/no-throw-literal": "off"
     }
 }

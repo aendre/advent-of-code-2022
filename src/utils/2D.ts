@@ -101,6 +101,21 @@ export function commandToDirection(command:string): Direction {
   }
 }
 
+export function oppositeDirection(direction: Direction) : Direction {
+  switch (direction) {
+    case Direction.Down: return Direction.Up;
+    case Direction.Up: return Direction.Down;
+    case Direction.Left: return Direction.Right;
+    case Direction.Right: return Direction.Left;
+    case Direction.StayStill: return Direction.StayStill;
+    case Direction.DiagonalDownLeft: return Direction.DiagonalUpRight;
+    case Direction.DiagonalUpRight: return Direction.DiagonalDownLeft;
+    case Direction.DiagonalDownRight: return Direction.DiagonalUpLeft;
+    case Direction.DiagonalUpLeft: return Direction.DiagonalDownRight;
+    default: return direction
+  }
+}
+
 type IsUnkown<T> = T extends unknown ? T : never
 
 export class Point2D<T = unknown> {
@@ -160,7 +175,7 @@ export class Point2D<T = unknown> {
   }
 
   get key() {
-    return `${this.x}-${this.y}`
+    return `${this.x}=-=${this.y}`
   }
 
   get x() {
