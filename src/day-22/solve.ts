@@ -15,7 +15,7 @@ type MonkeyMap = {
 
 function parseMap(raw: string[]) : MonkeyMap {
   const height = raw.length;
-  const width = raw[height - 1].length;
+  const width = Math.max(...raw.map(i => i.length));
   const map: Map<string, Point2D> = new Map();
 
   for (let y = 0; y < height; y += 1) {
@@ -77,7 +77,6 @@ function traverseMap(map: MonkeyMap, direction: Direction, startingPosition: Poi
   if (typeof mapElement === 'undefined') {
     nextTile = goToOtherSide(map, direction, nextTile)
     mapElement = map.map.get(nextTile.key)
-    // console.log(startingPosition, '--->', nextTile, tile)
   }
 
   // If we are still off the map, we fucked up something
